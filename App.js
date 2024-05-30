@@ -1,70 +1,20 @@
-import React from 'react';
-import { SafeAreaView, View, Text, FlatList, StyleSheet } from 'react-native';
-import ListHeader from './src/components/ListHeader';
-import ListFooter from './src/components/ListFooter';
-import { useState, useEffect } from 'react';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './src/screens/Home';
+import DetailsScreen from './src/screens/Details';
 
-const App = () => {
-  const data = [
-    { id: '1', title: 'Élément 1' },
-    { id: '2', title: 'Élément 2' },
-    { id: '3', title: 'Élément 3' },
-    { id: '4', title: 'Élément 4' },
-    { id: '5', title: 'Élément 5' },
-    { id: '6', title: 'Élément 6' },
-    { id: '7', title: 'Élément 7' },
-    { id: '8', title: 'Élément 8' },
-    { id: '9', title: 'Élément 9' },
-    { id: '10', title: 'Élément 10' },
-  ];
+const Stack = createNativeStackNavigator();
 
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.itemText}>{item.title}</Text>
-    </View>
-  );
-
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-
-  useEffect(() => {
-      const timer = setInterval(() => {
-        setCurrentTime(new Date().toLocaleTimeString());
-      }, 1000);
-  
-      // Cleanup the interval on component unmount
-      return () => clearInterval(timer);
-    }, []);
-
+function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <ListHeader currentTime={currentTime} />
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContentContainer}
-      />
-      <ListFooter />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  listContentContainer: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
-  },
-  item: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  itemText: {
-    fontSize: 18,
-  }
-});
+}
 
 export default App;
