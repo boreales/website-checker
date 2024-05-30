@@ -1,5 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, Text, FlatList, StyleSheet } from 'react-native';
+import ListHeader from './src/components/ListHeader';
+import ListFooter from './src/components/ListFooter';
 
 const App = () => {
   const data = [
@@ -18,25 +20,6 @@ const App = () => {
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{item.title}</Text>
-    </View>
-  );
-
-  const ListHeader = () => (
-    <View style={styles.headerContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Website Checker</Text>
-      </View>
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>
-           Appli de monitoring pour sites web
-        </Text>
-      </View>
-    </View>
-  );
-
-  const ListFooter = () => (
-    <View style={styles.footer}>
-      <Text style={styles.footerText}>Website Checker © 2024</Text>
     </View>
   );
 
@@ -62,29 +45,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-  headerContainer: {
-    marginBottom: 20,
-  },
-  titleContainer: {
-    backgroundColor: '#5AA2FA',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 20,
-    color: '#fff',
-  },
-  descriptionContainer: {
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#fff',
-  },
-  descriptionText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
   item: {
     padding: 20,
     borderBottomWidth: 1,
@@ -92,18 +52,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 18,
-  },
-  footer: {
-    padding: 20,
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    alignItems: 'center',
-    backgroundColor: '#5AA2FA',
-  },
-  footerText: {
-    fontSize: 16,
-    color: '#fff',
-  },
+  }
 });
 
 export default App;
