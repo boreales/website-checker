@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
 
 const ListHeader = () => {
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
-    function updateTime() {
-        setCurrentTime(new Date().toLocaleTimeString());
-    }
+    useEffect(() => {
+        const timer = setInterval(() => {
+          setCurrentTime(new Date().toLocaleTimeString());
+        }, 1000);
+    
+        // Cleanup the interval on component unmount
+        return () => clearInterval(timer);
+      }, []);
 
     return (
         <View style={styles.headerContainer}>
@@ -19,7 +24,6 @@ const ListHeader = () => {
              Appli de monitoring pour sites web
           </Text>
           <Text>{currentTime}</Text>
-          <Button title="Mettre à jour l'heure" onPress={updateTime} />
         </View>
       </View>
     );
