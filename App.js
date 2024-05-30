@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, View, Text, FlatList, StyleSheet } from 'react-native';
 import ListHeader from './src/components/ListHeader';
 import ListFooter from './src/components/ListFooter';
+import { useState, useEffect } from 'react';
 
 const App = () => {
   const data = [
@@ -23,16 +24,27 @@ const App = () => {
     </View>
   );
 
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+
+  useEffect(() => {
+      const timer = setInterval(() => {
+        setCurrentTime(new Date().toLocaleTimeString());
+      }, 1000);
+  
+      // Cleanup the interval on component unmount
+      return () => clearInterval(timer);
+    }, []);
+
   return (
     <SafeAreaView style={styles.container}>
+      <ListHeader currentTime={currentTime} />
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        ListHeaderComponent={ListHeader}
-        ListFooterComponent={ListFooter}
         contentContainerStyle={styles.listContentContainer}
       />
+      <ListFooter />
     </SafeAreaView>
   );
 };

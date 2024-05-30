@@ -2,18 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 
-const ListHeader = () => {
-    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-          setCurrentTime(new Date().toLocaleTimeString());
-        }, 1000);
-    
-        // Cleanup the interval on component unmount
-        return () => clearInterval(timer);
-      }, []);
-
+const ListHeader = ({currentTime}) => {
     return (
         <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
