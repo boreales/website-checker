@@ -1,7 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import { useState } from 'react';
 
 const ListHeader = () => {
+    const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+
+    function updateTime() {
+        setCurrentTime(new Date().toLocaleTimeString());
+    }
+
     return (
         <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
@@ -11,6 +18,8 @@ const ListHeader = () => {
           <Text style={styles.descriptionText}>
              Appli de monitoring pour sites web
           </Text>
+          <Text>{currentTime}</Text>
+          <Button title="Mettre à jour l'heure" onPress={updateTime} />
         </View>
       </View>
     );
