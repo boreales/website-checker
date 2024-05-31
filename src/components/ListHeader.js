@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
+import Form from './Form';
 
-const ListHeader = ({currentTime}) => {
+const ListHeader = ({navigation}) => {
     return (
         <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
@@ -10,17 +10,16 @@ const ListHeader = ({currentTime}) => {
         </View>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionText}>
-             Appli de monitoring pour sites web
+             Website monitoring mobile app
           </Text>
-          <Text>{currentTime}</Text>
         </View>
+        <Form navigation={navigation}/>
       </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'lightgray',
         padding: 10,
     },
     text: {
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 20,
         marginBottom: 20,
-        backgroundColor: '#fff',
     },
     descriptionText: {
         fontSize: 16,

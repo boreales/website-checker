@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const ListFooter = () => (
     <View style={styles.footer}>
-      <Text style={styles.footerText}>Website Checker © 2024</Text>
+      <Text style={styles.footerText}>Made with ❤️ & React Native © 2024</Text>
     </View>
 );
 
