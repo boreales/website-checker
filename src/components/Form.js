@@ -1,25 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import { View, TextInput, Button, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
+import React, {useState} from 'react';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Form = ({navigation}) => {
+const Form = ({listItems, setListItems}) => {
     const [inputText, setInputText] = useState('');
     const [inputUrl, setInputUrl] = useState('');
-    const [listItems, setListItems] = useState([]);
-  
-    useEffect(() => {
-      const loadItems = async () => {
-        try {
-          const storedItems = await AsyncStorage.getItem('listItems');
-          if (storedItems) {
-            setListItems(JSON.parse(storedItems));
-          }
-        } catch (error) {
-          console.error('Failed to load items from AsyncStorage', error);
-        }
-      };
-      loadItems();
-    }, []);
   
     const handleAddItem = async () => {
       if (inputText.trim() && inputUrl.trim()) {
@@ -33,16 +18,6 @@ const Form = ({navigation}) => {
         } catch (error) {
           console.error('Failed to save item to AsyncStorage', error);
         }
-      }
-    };
-  
-    const handleDeleteItem = async (index) => {
-      const newListItems = listItems.filter((_, i) => i !== index);
-      setListItems(newListItems);
-      try {
-        await AsyncStorage.setItem('listItems', JSON.stringify(newListItems));
-      } catch (error) {
-        console.error('Failed to delete item from AsyncStorage', error);
       }
     };
 
@@ -64,23 +39,6 @@ const Form = ({navigation}) => {
                 title="Add to List"
                 onPress={handleAddItem}
             />
-              {listItems.map((item, index) => (
-              <View key={index} style={styles.listItem}>
-                  <View>
-                  <Text>{item.text}</Text>
-                  <TouchableOpacity onPress={() => 
-                    navigation.navigate('Details', {
-                      website: item.text,
-                    })
-                  }>
-                    <Text style={styles.urlText}>{item.url}</Text>
-                  </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity onPress={() => handleDeleteItem(index)} style={styles.deleteButton}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                  </TouchableOpacity>
-              </View>
-              ))}
         </View>
     );
 };

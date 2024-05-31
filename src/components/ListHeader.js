@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Form from './Form';
+import List from './List';
 
 const ListHeader = ({navigation}) => {
+    const [listItems, setListItems] = useState([]);
     return (
         <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
@@ -13,7 +15,8 @@ const ListHeader = ({navigation}) => {
              Website monitoring mobile app
           </Text>
         </View>
-        <Form navigation={navigation}/>
+        <Form listItems={listItems} setListItems={setListItems} />
+        <List navigation={navigation} listItems={listItems} setListItems={setListItems} />
       </View>
     );
 };
