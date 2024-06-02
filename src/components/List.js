@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const List = ({navigation, listItems, setListItems}) => {
     useEffect(() => {
@@ -17,6 +18,7 @@ const List = ({navigation, listItems, setListItems}) => {
       };
 
       loadItems();
+      pingUrl();
 
       //Set an interval to ping the urls every 5 seconds
       const interval = setInterval(() => { 
@@ -31,8 +33,13 @@ const List = ({navigation, listItems, setListItems}) => {
       listItems.forEach(async (item) => {
         console.log('Pinging url: ', item.url);
         try {
-          const response = await fetch(item.url);
+          const response = await axios.get(item.url).then((response) => {
           console.log('Response status: ', response.status);
+            return response;
+          }).catch((error) => {
+            console.error('Failed to ping url: ', item.url, error);
+            return error.response;
+          });
           //Save the response in a new property of the item
           item.response = response.status;
           //Update the list of items
