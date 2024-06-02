@@ -1,22 +1,47 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const List = ({navigation, listItems, setListItems}) => {
- 
     useEffect(() => {
       const loadItems = async () => {
         try {
           const storedItems = await AsyncStorage.getItem('listItems');
           if (storedItems) {
-            setListItems(JSON.parse(storedItems));
+            const parsedItems = JSON.parse(storedItems);
+            setListItems(parsedItems);
           }
         } catch (error) {
           console.error('Failed to load items from AsyncStorage', error);
         }
       };
+
       loadItems();
+
+      //Set an interval to ping the urls every 5 seconds
+      const interval = setInterval(() => { 
+        pingUrl();
+      }, 5000);
+
+      return () => clearInterval(interval);
     }, []);
+
+    const pingUrl = async () => {
+      //Loop through the list of items and ping the url
+      listItems.forEach(async (item) => {
+        console.log('Pinging url: ', item.url);
+        try {
+          const response = await fetch(item.url);
+          console.log('Response status: ', response.status);
+          //Save the response in a new property of the item
+          item.response = response.status;
+          //Update the list of items
+          setListItems([...listItems]);
+        } catch (error) {
+          console.error('Failed to ping url: ', item.url, error);
+        }
+      });
+    };
 
     const handleDeleteItem = async (index) => {
         const newListItems = listItems.filter((_, i) => i !== index);
@@ -33,6 +58,9 @@ const List = ({navigation, listItems, setListItems}) => {
             {listItems.map((item, index) => (
             <View key={index} style={styles.listItem}>
                 <View>
+                {item.response == 200 && <Text style={styles.ok}>OK</Text>}
+                {item.response == 404 && <Text>Not Found</Text>}
+                {item.response == 500 && <Text>Internal Server Error</Text>}
                 <Text>{item.text}</Text>
                 <TouchableOpacity onPress={() => 
                 navigation.navigate('Details', {
@@ -73,6 +101,10 @@ const styles = StyleSheet.create({
       urlText: {
         color: 'blue',
         textDecorationLine: 'underline',
+      },
+      ok: {
+        color: 'green',
+        fontWeight: 'bold',
       },
 });
 
