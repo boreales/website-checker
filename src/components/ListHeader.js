@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import Form from './Form';
 import List from './List';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListHeader = ({navigation}) => {
     const [listItems, setListItems] = useState([]);
+
+    const signOut = async () => {
+        await AsyncStorage.removeItem('userToken');
+        navigation.navigate('Login');
+    }
+
     return (
         <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
@@ -14,6 +21,7 @@ const ListHeader = ({navigation}) => {
           <Text style={styles.descriptionText}>
              Website monitoring mobile app
           </Text>
+          <Button title="Sign out" onPress={signOut} />
         </View>
         <Form listItems={listItems} setListItems={setListItems} />
         <List navigation={navigation} listItems={listItems} setListItems={setListItems} />
