@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
 
 function LoginScreen({ navigation }) {
     const [inputText, setInputText] = useState('');
@@ -18,7 +19,11 @@ function LoginScreen({ navigation }) {
             }).then(async (response) => {
                 console.log(response.data);
                 if (response.data.token) {
-                    await AsyncStorage.setItem('userToken', response.data.token);
+                    RNSecureStorage.setItem("userToken", response.data.token, {accessible: ACCESSIBLE.WHEN_UNLOCKED}).then((res) => {
+                      console.log(res);
+                    }).catch((err) => {
+                      console.log(err);
+                    });
                     navigation.navigate('Home');
                 }
             }).catch((error) => {

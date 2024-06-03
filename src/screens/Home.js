@@ -2,18 +2,16 @@ import React, {useEffect} from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import ListHeader from '../components/ListHeader';
 import ListFooter from '../components/ListFooter';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 
 function HomeScreen({ navigation }) {
   useEffect(() => {
     const getToken = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token) {
-        console.log('userToken:', token);
+      RNSecureStorage.getItem("userToken").then((res) => {
         navigation.navigate('Home');
-      } else {
+      }).catch((err) => {
         navigation.navigate('Login');
-      }
+      });
     }
     getToken();
   }, []);
