@@ -48,6 +48,8 @@ function LoginScreen({ navigation }) {
                 style={styles.input}
                 placeholder="Enter your password"
                 value={inputPassword}
+                type='password'
+                secureTextEntry={true}
                 onChangeText={text => setinputPassword(text)}
             />
             <Button

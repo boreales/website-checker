@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Form from './Form';
 import List from './List';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,11 +17,15 @@ const ListHeader = ({navigation}) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Website Checker</Text>
         </View>
+        <View style={styles.logoutView}>
+        <TouchableOpacity style={styles.logoutButton} onPress={signOut}>
+            <Text style={styles.logoutText}>Sign out</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionText}>
              Website monitoring mobile app
           </Text>
-          <Button title="Sign out" onPress={signOut} />
         </View>
         <Form listItems={listItems} setListItems={setListItems} />
         <List navigation={navigation} listItems={listItems} setListItems={setListItems} />
@@ -50,6 +54,20 @@ const styles = StyleSheet.create({
         margin: 20,
         color: '#fff',
       },
+    logoutView: {
+        alignItems: 'flex-end',
+    },
+    logoutButton: {
+        backgroundColor: '#f00',
+        padding: 10,
+        margin: 10,
+        width: 80,
+        borderRadius: 5,
+    },
+    logoutText: {
+        color: '#fff',
+        textAlign: 'center',
+    },
     descriptionContainer: {
         paddingHorizontal: 20,
         marginTop: 20,
