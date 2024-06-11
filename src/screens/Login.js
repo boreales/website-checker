@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Button, Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -19,14 +19,18 @@ function LoginScreen({ navigation }) {
                 console.log(response.data);
                 if (response.data.token) {
                     await AsyncStorage.setItem('userToken', response.data.token);
+                    await AsyncStorage.setItem('userEmail', inputText);
                     navigation.navigate('Home');
                 }
             }).catch((error) => {
                 console.error('Failed to login', error);
+                Alert.alert('Error', 'Please enter a valid email and password');
             });
           } catch (error) {
             console.error('Failed to save item to AsyncStorage', error);
           }
+        } else {
+          Alert.alert('Error', 'Please enter a valid email and password');
         }
       };
 

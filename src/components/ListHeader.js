@@ -4,7 +4,7 @@ import Form from './Form';
 import List from './List';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ListHeader = ({navigation}) => {
+const ListHeader = ({navigation, username}) => {
     const [listItems, setListItems] = useState([]);
 
     const signOut = async () => {
@@ -18,7 +18,8 @@ const ListHeader = ({navigation}) => {
           <Text style={styles.title}>Website Checker</Text>
         </View>
         <View style={styles.logoutView}>
-        <TouchableOpacity style={styles.logoutButton} onPress={signOut}>
+            <Text style={styles.text}>{username}</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={signOut}>
             <Text style={styles.logoutText}>Sign out</Text>
           </TouchableOpacity>
         </View>
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         fontWeight: 'bold',
+        marginRight:10
     },
     headerContainer: {
         marginBottom: 20,
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         backgroundColor: '#f00',
-        padding: 10,
+        padding: 5,
         margin: 10,
         width: 80,
         borderRadius: 5,

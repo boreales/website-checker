@@ -5,9 +5,12 @@ import ListFooter from '../components/ListFooter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function HomeScreen({ navigation }) {
+  const [username, setUsername] = React.useState('');
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem('userToken');
+      const userEmail = await AsyncStorage.getItem('userEmail');
+      setUsername(userEmail);
       if (token) {
         console.log('userToken:', token);
         navigation.navigate('Home');
@@ -21,7 +24,7 @@ function HomeScreen({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <ListHeader navigation={navigation}/>
+        <ListHeader username={username} navigation={navigation}/>
         <ListFooter />
       </View>
     </ScrollView>
