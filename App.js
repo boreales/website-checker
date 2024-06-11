@@ -4,10 +4,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screens/Home';
 import DetailsScreen from './src/screens/Details';
 import LoginScreen from './src/screens/Login';
+import Geolocation from '@react-native-community/geolocation';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
+  Geolocation.getCurrentPosition(info => console.log(info));
   return (
     <NavigationContainer>
       <Stack.Navigator>
