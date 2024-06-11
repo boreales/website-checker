@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { TextInput, Button, Card, Title, Paragraph, Text } from 'react-native-paper';
 
 function LoginScreen({ navigation }) {
     const [inputText, setInputText] = useState('');
@@ -13,7 +14,7 @@ function LoginScreen({ navigation }) {
             console.log('inputPassword:', inputPassword);
           try {
             axios.post('https://website-checker.boreales-creations.fr/auth', {
-                "email": "boreales.creations@gmail.com",
+                "email": "test@example.com",
                 "password": "test",
             }).then(async (response) => {
                 console.log(response.data);
@@ -31,86 +32,58 @@ function LoginScreen({ navigation }) {
       };
 
     return (
-        <View style={styles.headerContainer}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>Website Checker</Text>
-            </View>
-            <Text style={styles.subtitle}>Login</Text>
-            <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter your email"
+    <View style={styles.container}>
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title style={styles.title}>Welcome Back</Title>
+              <Paragraph>Please login to your account</Paragraph>
+              <TextInput
+                label="Email"
                 value={inputText}
-                keyboardType='email-address'
                 onChangeText={text => setInputText(text)}
-            />
-            <TextInput
                 style={styles.input}
-                placeholder="Enter your password"
+                mode="outlined"
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <TextInput
+                label="Password"
                 value={inputPassword}
-                type='password'
-                secureTextEntry={true}
                 onChangeText={text => setinputPassword(text)}
-            />
-            <Button
-                title="Sign in"
-                onPress={checkLogin}
-            />
-            </View>
+                style={styles.input}
+                mode="outlined"
+                secureTextEntry
+              />
+              <Button mode="contained" onPress={checkLogin} style={styles.button}>
+                Login
+              </Button>
+            </Card.Content>
+          </Card>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+      flex: 1,
+      justifyContent: 'center',
+      padding: 20,
+      backgroundColor: '#f0f0f0',
+    },
+    card: {
       padding: 20,
     },
-    headerContainer: {
-        marginBottom: 20,
-    },
-    titleContainer: {
-        backgroundColor: '#5AA2FA',
-    },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        margin: 20,
-        color: '#fff',
-    },
-    subtitle: {
-        fontSize: 24,
-        marginBottom: 20,
-        marginTop: 10,
-        textAlign: 'center',
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      textAlign: 'center',
     },
     input: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
       marginBottom: 20,
-      paddingHorizontal: 10,
     },
-    listItem: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
-    deleteButton: {
-      backgroundColor: 'red',
-      padding: 5,
-      borderRadius: 5,
-    },
-    deleteButtonText: {
-      color: 'white',
-      fontWeight: 'bold',
-    },
-    urlText: {
-      color: 'blue',
-      textDecorationLine: 'underline',
+    button: {
+      marginTop: 10,
     },
   });
 
