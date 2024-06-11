@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#ccc',
         alignItems: 'center',
-        backgroundColor: '#5AA2FA',
+        backgroundColor: '#6200ee',
       },
       footerText: {
         fontSize: 16,

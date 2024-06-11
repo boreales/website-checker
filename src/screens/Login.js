@@ -14,7 +14,7 @@ function LoginScreen({ navigation }) {
             console.log('inputPassword:', inputPassword);
           try {
             axios.post('https://website-checker.boreales-creations.fr/auth', {
-                "email": "test@example.com",
+                "email": "boreales.creations@gmail.com",
                 "password": "test",
             }).then(async (response) => {
                 console.log(response.data);
@@ -35,7 +35,7 @@ function LoginScreen({ navigation }) {
     <View style={styles.container}>
           <Card style={styles.card}>
             <Card.Content>
-              <Title style={styles.title}>Welcome Back</Title>
+              <Title style={styles.title}>Website Checker</Title>
               <Paragraph>Please login to your account</Paragraph>
               <TextInput
                 label="Email"
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#f0f0f0',
     },
     card: {
-      padding: 20,
+      padding: 0,
     },
     title: {
       fontSize: 24,
