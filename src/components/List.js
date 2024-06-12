@@ -1,32 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from 'react-native-paper';
 import axios from 'axios';
 
 const List = ({navigation, listItems, setListItems}) => {
     useEffect(() => {
-      const loadItems = async () => {
-        try {
-          const storedItems = await AsyncStorage.getItem('listItems');
-          if (storedItems) {
-            const parsedItems = JSON.parse(storedItems);
-            setListItems(parsedItems);
-          }
-        } catch (error) {
-          console.error('Failed to load items from AsyncStorage', error);
-        }
-      };
+       pingUrl();
 
-      loadItems();
-      pingUrl();
+        //Set an interval to ping the urls every minute
+        const interval = setInterval(() => { 
+           pingUrl();
+        }, 60000);
 
-      //Set an interval to ping the urls every 5 seconds
-      const interval = setInterval(() => { 
-        pingUrl();
-      }, 5000);
-
-      return () => clearInterval(interval);
-    }, []);
+        return () => clearInterval(interval);
+     }, []);
 
     const pingUrl = async () => {
       //Loop through the list of items and ping the url
@@ -68,7 +56,7 @@ const List = ({navigation, listItems, setListItems}) => {
                 {item.response == 200 && <Text style={styles.ok}>OK</Text>}
                 {item.response == 404 && <Text>Not Found</Text>}
                 {item.response == 500 && <Text>Internal Server Error</Text>}
-                <Text>{item.text}</Text>
+                <Text>{item.name}</Text>
                 <TouchableOpacity onPress={() => 
                 navigation.navigate('Details', {
                     website: item.text,
