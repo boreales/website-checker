@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { View, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput, Button, Card, Title } from 'react-native-paper';
 import axios from 'axios';
+import RNSecureStorage from 'rn-secure-storage';
 
-const Form = ({listItems, setListItems}) => {
+const Form = ({listItems, setListItems, setFormVisible}) => {
     const [inputText, setInputText] = useState('');
     const [inputUrl, setInputUrl] = useState('');
 
@@ -14,16 +14,17 @@ const Form = ({listItems, setListItems}) => {
         "url": inputUrl,
         }, {
           headers: {
-          'Authorization': 'Bearer ' + await AsyncStorage.getItem('userToken'),
+          'Authorization': 'Bearer ' + await RNSecureStorage.getItem('userToken'),
           'Content-Type': 'application/ld+json',
         },
       }).then((response) => {
         console.log(response.data);
-        const newItem = { text: inputText, url: inputUrl };
+        const newItem = { name: inputText, url: inputUrl };
         const newListItems = [...listItems, newItem];
         setListItems(newListItems);
         setInputText('');
         setInputUrl('');
+        setFormVisible(false);
       }
     ).catch((error) => {
       console.error('Failed to post website', error);

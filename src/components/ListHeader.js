@@ -7,24 +7,9 @@ import RNSecureStorage from 'rn-secure-storage';
 import axios from 'axios';
 
 const ListHeader = ({navigation, setIsAuthenticated}) => {
-    const [listItems, setListItems] = useState([]);
-    const [token, setToken] = useState('');
     const [formVisible, setFormVisible] = useState(false);
     const [textForAddButton, setTextForAddButton] = useState('+ Add');
-
-    useEffect(() => {
-        const getToken = async () => {
-            const token = await AsyncStorage.getItem('userToken');
-            if (token) {
-                console.log('userToken:', token);
-                setToken(token);
-                getWebsitesFromAPI();
-            } else {
-                navigation.navigate('Login');
-            }
-        }
-        getToken();
-    }, []);
+    const [listItems, setListItems] = useState([]);
 
     const signOut = async () => {
         await RNSecureStorage.removeItem('userToken');
@@ -39,41 +24,6 @@ const ListHeader = ({navigation, setIsAuthenticated}) => {
             setTextForAddButton('x Close');
         }
     }
-
-    const getWebsitesFromAPI = async () => {
-        axios.get('https://website-checker.boreales-creations.fr/api/websites', {
-          headers: {
-            'Authorization': 'Bearer ' + await AsyncStorage.getItem('userToken'),
-          },
-        }).then((response) => {
-          console.log(response.data['hydra:member']);
-          setListItems(response.data['hydra:member']);
-        }).catch((error) => {
-          console.error('Failed to fetch websites', error);
-          //Get error status code
-            if (error.response.status === 401) {
-                refreshToken();
-                getWebsitesFromAPI();
-            }
-        });
-      }
-
-    const refreshToken = async () => {
-        axios.post('https://website-checker.boreales-creations.fr/api/token/refresh', {
-          token: await AsyncStorage.getItem('userToken'),
-        }).then((response) => {
-          console.log(response.data);
-          if (response.data.token) {
-            AsyncStorage.setItem('userToken', response.data.token);
-          }
-        }).catch((error) => {
-          console.error('Failed to refresh token', error);
-          //Logout 
-            signOut();
-            //Redirect to login
-            navigation.navigate('Login');
-        });
-      }
 
     return (
         <View style={styles.container}>
@@ -99,14 +49,8 @@ const ListHeader = ({navigation, setIsAuthenticated}) => {
                     </View>
                 </View>
             </View>
-            {listItems !== undefined ? (
-              <>
-                {formVisible && <Form listItems={listItems} setListItems={setListItems} />}
-                <List navigation={navigation} listItems={listItems} setListItems={setListItems} />
-              </>
-            ): (
-              <Text style={{color:"black", fontSize:40}}>Loading...</Text>
-            )}
+            {formVisible && <Form setFormVisible={setFormVisible} listItems={listItems} setListItems={setListItems} />}
+            <List listItems={listItems} setListItems={setListItems} navigation={navigation} />
       </View>
     );
 };
