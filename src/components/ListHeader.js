@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Form from './Form';
 import List from './List';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 
-const ListHeader = ({navigation}) => {
+const ListHeader = ({navigation, setIsAuthenticated}) => {
     const [listItems, setListItems] = useState([]);
 
     const signOut = async () => {
-        await AsyncStorage.removeItem('userToken');
-        navigation.navigate('Login');
+        await RNSecureStorage.removeItem('userToken');
+        setIsAuthenticated(false);
     }
 
     return (

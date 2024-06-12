@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
 
-function LoginScreen({ navigation }) {
+function LoginScreen({ navigation, setIsAuthenticated }) {
     const [inputText, setInputText] = useState('');
     const [inputPassword, setinputPassword] = useState('');
 
@@ -24,7 +23,7 @@ function LoginScreen({ navigation }) {
                     }).catch((err) => {
                       console.log(err);
                     });
-                    navigation.navigate('Home');
+                    setIsAuthenticated(true);
                 }
             }).catch((error) => {
                 console.error('Failed to login', error);
