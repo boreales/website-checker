@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 
 const List = ({navigation, listItems, setListItems}) => {
     useEffect(() => {
@@ -18,37 +17,7 @@ const List = ({navigation, listItems, setListItems}) => {
       };
 
       loadItems();
-      pingUrl();
-
-      //Set an interval to ping the urls every 5 seconds
-      const interval = setInterval(() => { 
-        pingUrl();
-      }, 5000);
-
-      return () => clearInterval(interval);
     }, []);
-
-    const pingUrl = async () => {
-      //Loop through the list of items and ping the url
-      listItems.forEach(async (item) => {
-        console.log('Pinging url: ', item.url);
-        try {
-          const response = await axios.get(item.url).then((response) => {
-          console.log('Response status: ', response.status);
-            return response;
-          }).catch((error) => {
-            console.error('Failed to ping url: ', item.url, error);
-            return error.response;
-          });
-          //Save the response in a new property of the item
-          item.response = response.status;
-          //Update the list of items
-          setListItems([...listItems]);
-        } catch (error) {
-          console.error('Failed to ping url: ', item.url, error);
-        }
-      });
-    };
 
     const handleDeleteItem = async (index) => {
         const newListItems = listItems.filter((_, i) => i !== index);
