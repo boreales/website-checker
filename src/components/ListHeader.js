@@ -6,9 +6,11 @@ import List from './List';
 import RNSecureStorage from 'rn-secure-storage';
 import axios from 'axios';
 
+
 const ListHeader = ({navigation, setIsAuthenticated}) => {
     const [formVisible, setFormVisible] = useState(false);
     const [textForAddButton, setTextForAddButton] = useState('+ Add');
+
     const [listItems, setListItems] = useState([]);
 
     const signOut = async () => {

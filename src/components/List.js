@@ -29,6 +29,7 @@ const List = ({ navigation, listItems, setListItems }) => {
     getToken();
   }, []);
 
+
   useEffect(() => {
     if (isInitialized) {
       pingUrl();

@@ -28,10 +28,13 @@ function LoginScreen({ navigation, setIsAuthenticated }) {
                 }
             }).catch((error) => {
                 console.error('Failed to login', error);
+                Alert.alert('Error', 'Please enter a valid email and password');
             });
           } catch (error) {
             console.error('Failed to save item to AsyncStorage', error);
           }
+        } else {
+          Alert.alert('Error', 'Please enter a valid email and password');
         }
       };
 
