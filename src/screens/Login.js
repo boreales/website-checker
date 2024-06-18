@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, TextInput, Button, Text, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { TextInput, Button, Card, Title, Paragraph, Text } from 'react-native-paper';
+import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
 
-function LoginScreen({ navigation }) {
+function LoginScreen({ navigation, setIsAuthenticated }) {
     const [inputText, setInputText] = useState('');
     const [inputPassword, setinputPassword] = useState('');
 
@@ -18,9 +19,12 @@ function LoginScreen({ navigation }) {
             }).then(async (response) => {
                 console.log(response.data);
                 if (response.data.token) {
-                    await AsyncStorage.setItem('userToken', response.data.token);
-                    await AsyncStorage.setItem('userEmail', inputText);
-                    navigation.navigate('Home');
+                    RNSecureStorage.setItem("userToken", response.data.token, {accessible: ACCESSIBLE.WHEN_UNLOCKED}).then((res) => {
+                      console.log(res);
+                    }).catch((err) => {
+                      console.log(err);
+                    });
+                    setIsAuthenticated(true);
                 }
             }).catch((error) => {
                 console.error('Failed to login', error);
@@ -35,86 +39,58 @@ function LoginScreen({ navigation }) {
       };
 
     return (
-        <View style={styles.headerContainer}>
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>Website Checker</Text>
-            </View>
-            <Text style={styles.subtitle}>Login</Text>
-            <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter your email"
+    <View style={styles.container}>
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title style={styles.title}>Website Checker</Title>
+              <Paragraph>Please login to your account</Paragraph>
+              <TextInput
+                label="Email"
                 value={inputText}
-                keyboardType='email-address'
                 onChangeText={text => setInputText(text)}
-            />
-            <TextInput
                 style={styles.input}
-                placeholder="Enter your password"
+                mode="outlined"
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <TextInput
+                label="Password"
                 value={inputPassword}
-                type='password'
-                secureTextEntry={true}
                 onChangeText={text => setinputPassword(text)}
-            />
-            <Button
-                title="Sign in"
-                onPress={checkLogin}
-            />
-            </View>
+                style={styles.input}
+                mode="outlined"
+                secureTextEntry
+              />
+              <Button mode="contained" onPress={checkLogin} style={styles.button}>
+                Login
+              </Button>
+            </Card.Content>
+          </Card>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+      flex: 1,
+      justifyContent: 'center',
       padding: 20,
+      backgroundColor: '#f0f0f0',
     },
-    headerContainer: {
-        marginBottom: 20,
-    },
-    titleContainer: {
-        backgroundColor: '#5AA2FA',
+    card: {
+      padding: 0,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        margin: 20,
-        color: '#fff',
-    },
-    subtitle: {
-        fontSize: 24,
-        marginBottom: 20,
-        marginTop: 10,
-        textAlign: 'center',
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      textAlign: 'center',
     },
     input: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
       marginBottom: 20,
-      paddingHorizontal: 10,
     },
-    listItem: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
-    deleteButton: {
-      backgroundColor: 'red',
-      padding: 5,
-      borderRadius: 5,
-    },
-    deleteButtonText: {
-      color: 'white',
-      fontWeight: 'bold',
-    },
-    urlText: {
-      color: 'blue',
-      textDecorationLine: 'underline',
+    button: {
+      marginTop: 10,
     },
   });
 

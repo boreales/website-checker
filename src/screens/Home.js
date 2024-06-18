@@ -2,29 +2,13 @@ import React, {useEffect} from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import ListHeader from '../components/ListHeader';
 import ListFooter from '../components/ListFooter';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNSecureStorage from 'rn-secure-storage';
 
-function HomeScreen({ navigation }) {
-  const [username, setUsername] = React.useState('');
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      const userEmail = await AsyncStorage.getItem('userEmail');
-      setUsername(userEmail);
-      if (token) {
-        console.log('userToken:', token);
-        navigation.navigate('Home');
-      } else {
-        navigation.navigate('Login');
-      }
-    }
-    getToken();
-  }, []);
-
+function HomeScreen({ navigation, setIsAuthenticated }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <ListHeader username={username} navigation={navigation}/>
+        <ListHeader setIsAuthenticated={setIsAuthenticated} navigation={navigation}/>
         <ListFooter />
       </View>
     </ScrollView>
