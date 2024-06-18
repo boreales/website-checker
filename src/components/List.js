@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper';
 import axios from 'axios';
 import RNSecureStorage from 'rn-secure-storage';
 
-const List = ({ navigation, listItems, setListItems }) => {
+const List = ({ navigation, listItems, setListItems, signOut }) => {
   const [token, setToken] = useState('');
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -54,7 +54,6 @@ const List = ({ navigation, listItems, setListItems }) => {
       console.log(response.data['hydra:member']);
       setListItems(response.data['hydra:member']);
     } catch (error) {
-      console.error('Failed to fetch websites', error);
       if (error.response && error.response.status === 401) {
         await refreshToken();
         await getWebsitesFromAPI();

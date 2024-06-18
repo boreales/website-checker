@@ -52,7 +52,7 @@ const ListHeader = ({navigation, setIsAuthenticated}) => {
                 </View>
             </View>
             {formVisible && <Form setFormVisible={setFormVisible} listItems={listItems} setListItems={setListItems} />}
-            <List listItems={listItems} setListItems={setListItems} navigation={navigation} />
+            <List signOut={signOut} listItems={listItems} setListItems={setListItems} navigation={navigation} />
       </View>
     );
 };
